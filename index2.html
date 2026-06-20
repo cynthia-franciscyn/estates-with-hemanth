@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Estates with Hemanth</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --ink:     #080808;
+  --ink2:    #101010;
+  --ink3:    #181818;
+  --ink4:    #242424;
+  --rule:    #2E2E2E;
+  --dim:     #555555;
+  --muted:   #888888;
+  --silver:  #BBBBBB;
+  --offwhite:#E8E8E4;
+  --white:   #F4F4F0;
+  --pure:    #FFFFFF;
+  --fd: 'Playfair Display', Georgia, serif;
+  --fb: 'Inter', system-ui, sans-serif;
+  --ease: 0.38s cubic-bezier(0.4,0,0.2,1);
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--white);font-family:var(--fb);font-weight:300;line-height:1.6;overflow-x:hidden}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--ink)}
+::-webkit-scrollbar-thumb{background:var(--rule)}
+
+/* ══ NAV ══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:68px;padding:0 4rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background var(--ease),border-color var(--ease);
+  border-bottom:1px solid transparent;
+}
+nav.up{background:rgba(8,8,8,0.96);backdrop-filter:blur(16px);border-color:var(--rule)}
+
+.logo{
+  font-family:var(--fd);font-size:1.15rem;font-weight:700;
+  letter-spacing:0.06em;color:var(--white);text-decoration:none;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.logo-mark{
+  width:32px;height:32px;border:1.5px solid var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;letter-spacing:0.08em;font-family:var(--fb);font-weight:600;
+  color:var(--white);flex-shrink:0;
+}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-main{font-size:1.05rem;font-weight:700;letter-spacing:0.04em}
+.logo-sub{font-size:0.58rem;font-weight:400;letter-spacing:0.28em;text-transform:uppercase;color:var(--muted);font-family:var(--fb)}
+
+.nav-links{display:flex;align-items:center;gap:2.8rem;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;
+  transition:color var(--ease);position:relative;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.on{color:var(--white)}
+.nav-links a.on::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--white)}
+
+.nav-call{
+  display:flex;align-items:center;gap:0.5rem;
+  color:var(--white)!important;
+  border:1px solid var(--rule)!important;
+  padding:0.45rem 1.1rem!important;
+  font-size:0.7rem!important;letter-spacing:0.15em!important;
+  transition:border-color var(--ease),background var(--ease)!important;
+}
+.nav-call:hover{border-color:var(--white)!important;background:var(--white)!important;color:var(--ink)!important}
+.nav-call::after{display:none!important}
+
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.burger span{display:block;height:1px;background:var(--white);transition:var(--ease)}
+.burger span:nth-child(1){width:22px}
+.burger span:nth-child(2){width:16px}
+.burger span:nth-child(3){width:22px}
+.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);width:22px}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);width:22px}
+
+.mob-menu{
+  display:none;position:fixed;top:68px;left:0;right:0;
+  background:var(--ink2);border-bottom:1px solid var(--rule);
+  flex-direction:column;padding:2rem 2rem;gap:1.8rem;z-index:190;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{color:var(--muted);text-decoration:none;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;transition:color var(--ease)}
+.mob-menu a:hover,.mob-menu a.on{color:var(--white)}
+.mob-menu .mob-call{color:var(--white)!important;border:1px solid var(--rule);padding:0.7rem 1rem;text-align:center;margin-top:0.5rem}
+
+/* ══ HERO ══ */
+#hero{
+  min-height:100vh;position:relative;
+  display:flex;align-items:flex-end;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(8,8,8,0.35) 0%,rgba(8,8,8,0.7) 60%,rgba(8,8,8,1) 100%),
+    linear-gradient(90deg,rgba(8,8,8,0.55) 0%,transparent 60%),
+    url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1800&q=85') center/cover no-repeat;
+}
+.hero-body{
+  position:relative;z-index:2;
+  width:100%;padding:0 4rem 5rem;
+  display:grid;grid-template-columns:1fr auto;align-items:flex-end;gap:4rem;
+}
+.hero-left{}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--silver);font-weight:500;margin-bottom:1.8rem;
+}
+.hero-tag::before{content:'';display:block;width:32px;height:1px;background:var(--silver)}
+.hero-h1{
+  font-family:var(--fd);
+  font-size:clamp(3.2rem,6.5vw,6.2rem);
+  font-weight:900;line-height:1.02;
+  letter-spacing:-0.025em;
+  margin-bottom:1.6rem;
+}
+.hero-h1 i{font-style:italic;font-weight:400;color:var(--offwhite)}
+.hero-desc{
+  font-size:0.9rem;color:var(--muted);
+  max-width:440px;line-height:1.9;margin-bottom:2.4rem;
+}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-w{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:var(--white);color:var(--ink);
+  padding:0.9rem 2rem;font-family:var(--fb);
+  font-size:0.72rem;font-weight:600;letter-spacing:0.18em;
+  text-transform:uppercase;border:none;cursor:pointer;
+  transition:background var(--ease),transform var(--ease);
+  text-decoration:none;
+}
+.btn-w:hover{background:var(--pure);transform:translateY(-2px)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:transparent;color:var(--white);
+  padding:0.9rem 2rem;font-family:var(--fb);
+  font-size:0.72rem;font-weight:500;letter-spacing:0.18em;
+  text-transform:uppercase;border:1px solid rgba(255,255,255,0.22);
+  cursor:pointer;transition:border-color var(--ease),color var(--ease);
+  text-decoration:none;
+}
+.btn-ghost:hover{border-color:var(--white);color:var(--white)}
+
+.hero-right{padding-bottom:0.5rem}
+.hero-stats{display:flex;flex-direction:column;gap:2rem;align-items:flex-end;text-align:right}
+.hstat-num{font-family:var(--fd);font-size:2.6rem;font-weight:900;line-height:1;color:var(--white)}
+.hstat-label{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--dim);margin-top:0.25rem}
+.hstat-div{width:1px;height:30px;background:var(--rule);margin-left:auto}
+
+/* ══ TICKER ══ */
+.ticker{
+  background:var(--white);color:var(--ink);
+  padding:0.7rem 0;overflow:hidden;white-space:nowrap;
+}
+.ticker-track{
+  display:inline-block;
+  animation:roll 40s linear infinite;
+  font-size:0.65rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;
+}
+@keyframes roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.t-sep{margin:0 2.5rem;opacity:0.3}
+
+/* ══ SECTION SHELL ══ */
+.sec{padding:7rem 4rem}
+.sec-alt{background:var(--ink2)}
+.sec-eye{font-size:0.62rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--dim);font-weight:500;margin-bottom:1rem}
+.sec-h{font-family:var(--fd);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;line-height:1.12;letter-spacing:-0.02em}
+.sec-h i{font-style:italic;font-weight:400}
+.sec-rule{width:40px;height:1px;background:var(--rule);margin:1.5rem 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:1.5rem}
+.sec-head-left{}
+
+/* ══ FEATURED GRID ══ */
+.feat-grid{
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:2px;
+}
+.pcard{position:relative;overflow:hidden;cursor:pointer;background:var(--ink3)}
+.pcard:first-child{grid-row:span 2}
+.pcard img{
+  width:100%;height:100%;min-height:260px;
+  object-fit:cover;display:block;
+  filter:brightness(0.7) grayscale(20%);
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1),filter 0.7s ease;
+}
+.pcard:first-child img{min-height:540px}
+.pcard:hover img{transform:scale(1.06);filter:brightness(0.55) grayscale(0%)}
+.pcard-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.5rem;
+  background:linear-gradient(to top,rgba(8,8,8,0.95) 40%,transparent);
+}
+.pcard-badge{
+  display:inline-block;background:var(--white);color:var(--ink);
+  font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;
+  padding:0.2rem 0.6rem;margin-bottom:0.6rem;
+}
+.pcard-name{font-family:var(--fd);font-size:1.2rem;font-weight:700;line-height:1.2;margin-bottom:0.25rem}
+.pcard:first-child .pcard-name{font-size:1.7rem}
+.pcard-loc{font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:0.7rem}
+.pcard-price{font-family:var(--fd);font-size:1.25rem;font-weight:700;color:var(--white)}
+.pcard:first-child .pcard-price{font-size:1.6rem}
+.pcard-meta{display:flex;gap:1rem;margin-top:0.5rem}
+.pcard-meta span{font-size:0.68rem;color:var(--dim)}
+
+/* ══ LISTINGS ══ */
+#listings{padding:7rem 4rem}
+.search-row{
+  display:flex;gap:1px;flex-wrap:wrap;
+  margin-bottom:1px;
+}
+.s-input-wrap{flex:1;min-width:220px;position:relative}
+.s-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);opacity:0.3;pointer-events:none}
+.s-input{
+  width:100%;background:var(--ink3);border:1px solid var(--rule);
+  color:var(--white);padding:0.9rem 1rem 0.9rem 3rem;
+  font-family:var(--fb);font-size:0.82rem;outline:none;
+  transition:border-color var(--ease);
+}
+.s-input:focus{border-color:var(--silver)}
+.s-input::placeholder{color:var(--dim)}
+.s-select{
+  background:var(--ink3);border:1px solid var(--rule);color:var(--white);
+  padding:0.9rem 2.4rem 0.9rem 1rem;font-family:var(--fb);font-size:0.78rem;
+  outline:none;cursor:pointer;min-width:150px;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 0.9rem center;
+  transition:border-color var(--ease);
+}
+.s-select:focus{border-color:var(--silver)}
+.s-select option{background:var(--ink3)}
+.s-btn{
+  background:var(--white);color:var(--ink);border:none;
+  padding:0.9rem 2rem;font-family:var(--fb);
+  font-size:0.72rem;font-weight:700;letter-spacing:0.15em;
+  text-transform:uppercase;cursor:pointer;
+  white-space:nowrap;transition:background var(--ease);
+}
+.s-btn:hover{background:var(--pure)}
+
+.tag-row{
+  display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;
+  padding:1.2rem 0;border-bottom:1px solid var(--rule);margin-bottom:2.5rem;
+}
+.ftag{
+  padding:0.28rem 0.8rem;border:1px solid var(--rule);
+  font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--dim);cursor:pointer;transition:all var(--ease);
+}
+.ftag:hover,.ftag.on{border-color:var(--silver);color:var(--white)}
+.res-count{margin-left:auto;font-size:0.7rem;color:var(--dim);letter-spacing:0.08em}
+
+.list-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:2px;
+}
+.lcard{background:var(--ink3);overflow:hidden;cursor:pointer;transition:transform var(--ease);border:1px solid transparent}
+.lcard:hover{transform:translateY(-5px);border-color:var(--rule)}
+.lcard-img-w{position:relative;height:230px;overflow:hidden}
+.lcard-img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.78) grayscale(15%);transition:transform 0.65s cubic-bezier(0.4,0,0.2,1),filter 0.65s ease}
+.lcard:hover .lcard-img{transform:scale(1.07);filter:brightness(0.6) grayscale(0%)}
+.lcard-badge{position:absolute;top:1rem;left:1rem;background:var(--white);color:var(--ink);font-size:0.55rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;padding:0.22rem 0.65rem}
+.lcard-save{
+  position:absolute;top:1rem;right:1rem;width:32px;height:32px;
+  background:rgba(8,8,8,0.7);border:1px solid rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:background var(--ease),border-color var(--ease);
+}
+.lcard-save:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.4)}
+.lcard-body{padding:1.4rem}
+.lcard-price{font-family:var(--fd);font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:0.35rem}
+.lcard-name{font-family:var(--fd);font-size:1rem;font-weight:700;margin-bottom:0.25rem}
+.lcard-loc{font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:1rem}
+.lcard-div{height:1px;background:var(--rule);margin-bottom:1rem}
+.lcard-specs{display:flex;gap:1.2rem}
+.spec{display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--dim)}
+.no-res{grid-column:1/-1;padding:5rem;text-align:center;color:var(--muted)}
+.no-res strong{display:block;font-family:var(--fd);font-size:1.5rem;color:var(--silver);margin-bottom:0.5rem}
+
+/* ══ ABOUT ══ */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6rem;align-items:center;
+}
+.about-img-w{position:relative}
+.about-img{width:100%;height:560px;object-fit:cover;filter:grayscale(20%) brightness(0.85);display:block}
+.about-plaque{
+  position:absolute;bottom:-1.5rem;right:-1.5rem;
+  background:var(--white);color:var(--ink);
+  padding:1.8rem 2.2rem;
+}
+.plaque-num{font-family:var(--fd);font-size:3rem;font-weight:900;line-height:1;display:block}
+.plaque-txt{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;font-weight:600}
+.about-copy{color:var(--muted);font-size:0.88rem;line-height:1.95;margin-top:1.2rem}
+.about-dividers{display:flex;flex-direction:column;gap:0;margin-top:2.5rem}
+.about-stat{display:flex;align-items:center;gap:1.5rem;padding:1.2rem 0;border-top:1px solid var(--rule)}
+.astat-num{font-family:var(--fd);font-size:1.8rem;font-weight:700;color:var(--white);min-width:80px}
+.astat-label{font-size:0.78rem;color:var(--muted);line-height:1.5}
+
+/* ══ VALUES ══ */
+.vals{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:0}
+.val{background:var(--ink3);padding:3rem 2.5rem;border-top:2px solid transparent;transition:border-color var(--ease)}
+.val:hover{border-top-color:var(--white)}
+.val-n{font-family:var(--fd);font-size:3.5rem;font-weight:900;color:var(--rule);line-height:1;margin-bottom:1.5rem}
+.val-t{font-family:var(--fd);font-size:1.2rem;font-weight:700;margin-bottom:0.8rem}
+.val-d{font-size:0.82rem;color:var(--muted);line-height:1.85}
+
+/* ══ TEAM ══ */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px;margin-top:3.5rem}
+.tmcard{background:var(--ink3);overflow:hidden}
+.tmcard img{width:100%;height:300px;object-fit:cover;object-position:top;display:block;filter:grayscale(40%) brightness(0.82);transition:filter 0.6s ease}
+.tmcard:hover img{filter:grayscale(0%) brightness(0.9)}
+.tm-info{padding:1.4rem}
+.tm-name{font-family:var(--fd);font-size:1.1rem;font-weight:700}
+.tm-role{font-size:0.65rem;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-top:0.2rem}
+
+/* ══ CONTACT ══ */
+.contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:6rem;align-items:start}
+.c-detail{display:flex;gap:1rem;align-items:flex-start;margin-bottom:2rem}
+.c-icon{
+  width:42px;height:42px;min-width:42px;
+  border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;color:var(--silver);
+}
+.c-label{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--dim);margin-bottom:0.25rem}
+.c-val{font-size:0.9rem;color:var(--white)}
+.c-val a{color:var(--white);text-decoration:none}
+.c-val a:hover{color:var(--silver)}
+
+.form{display:flex;flex-direction:column;gap:1.2rem}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.fg{display:flex;flex-direction:column;gap:0.4rem}
+.fl{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim)}
+.fi,.fta,.fsel{
+  background:var(--ink3);border:1px solid var(--rule);
+  color:var(--white);padding:0.9rem 1rem;
+  font-family:var(--fb);font-size:0.85rem;
+  outline:none;transition:border-color var(--ease);width:100%;
+}
+.fi:focus,.fta:focus,.fsel:focus{border-color:var(--silver)}
+.fi::placeholder,.fta::placeholder{color:var(--dim)}
+.fta{resize:vertical;min-height:130px}
+.fsel{appearance:none;cursor:pointer}
+.fsel option{background:var(--ink3)}
+.fsub{
+  background:var(--white);color:var(--ink);border:none;
+  padding:1rem 2.4rem;font-family:var(--fb);
+  font-size:0.72rem;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;cursor:pointer;align-self:flex-start;
+  transition:background var(--ease),transform var(--ease);
+}
+.fsub:hover{background:var(--pure);transform:translateY(-2px)}
+.f-ok{
+  display:none;background:rgba(255,255,255,0.05);
+  border:1px solid var(--rule);padding:1rem 1.4rem;
+  font-size:0.8rem;color:var(--silver);letter-spacing:0.05em;
+}
+
+/* ══ FOOTER ══ */
+footer{background:var(--ink2);border-top:1px solid var(--rule);padding:5rem 4rem 2.5rem}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3.5rem}
+.foot-brand{font-family:var(--fd);font-size:1.2rem;font-weight:700;letter-spacing:0.05em;margin-bottom:1rem;display:flex;align-items:center;gap:0.6rem}
+.foot-brand .logo-mark{width:26px;height:26px;border-color:var(--rule);color:var(--silver);font-size:0.6rem}
+.foot-desc{color:var(--muted);font-size:0.8rem;line-height:1.85}
+.fcol-t{font-size:0.6rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--dim);margin-bottom:1.2rem}
+.fcol-links{list-style:none;display:flex;flex-direction:column;gap:0.75rem}
+.fcol-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;transition:color var(--ease)}
+.fcol-links a:hover{color:var(--white)}
+.foot-bottom{border-top:1px solid var(--rule);padding-top:1.8rem;display:flex;justify-content:space-between;align-items:center;font-size:0.68rem;color:var(--dim)}
+
+/* ══ WHATSAPP ══ */
+.wa{
+  position:fixed;bottom:1.8rem;right:1.8rem;z-index:300;
+  width:56px;height:56px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 24px rgba(37,211,102,0.35);
+  text-decoration:none;
+  transition:transform var(--ease),box-shadow var(--ease);
+  animation:wap 2.8s ease-in-out infinite;
+}
+.wa:hover{transform:scale(1.1);animation:none;box-shadow:0 6px 32px rgba(37,211,102,0.55)}
+@keyframes wap{0%,100%{box-shadow:0 4px 24px rgba(37,211,102,0.35)}50%{box-shadow:0 4px 36px rgba(37,211,102,0.6)}}
+.wa-tip{
+  position:absolute;right:66px;top:50%;transform:translateY(-50%);
+  background:var(--ink3);border:1px solid var(--rule);
+  color:var(--white);font-size:0.7rem;white-space:nowrap;
+  padding:0.4rem 0.85rem;letter-spacing:0.08em;
+  opacity:0;pointer-events:none;transition:opacity var(--ease);
+  font-family:var(--fb);
+}
+.wa:hover .wa-tip{opacity:1}
+
+/* ══ FADE-IN ══ */
+.fi-anim{opacity:0;transform:translateY(22px);transition:opacity 0.7s ease,transform 0.7s ease}
+.fi-anim.show{opacity:1;transform:none}
+
+/* ══ DIVIDER LINE ══ */
+.div-line{height:1px;background:var(--rule);margin:0 4rem}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:960px){
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .burger{display:flex}
+  .hero-body{padding:0 1.5rem 4rem;grid-template-columns:1fr}
+  .hero-right{display:none}
+  .sec{padding:5rem 1.5rem}
+  .sec-alt{padding:5rem 1.5rem}
+  .feat-grid{grid-template-columns:1fr}
+  .pcard:first-child{grid-row:auto}
+  .pcard:first-child img{min-height:320px}
+  #listings{padding:5rem 1.5rem}
+  .about-grid{grid-template-columns:1fr;gap:3rem}
+  .about-img-w{margin-bottom:2rem}
+  .about-plaque{right:0;bottom:-1rem}
+  .vals{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr;gap:3rem}
+  .f-row{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:2rem}
+  .foot-bottom{flex-direction:column;gap:0.5rem;text-align:center}
+  .div-line{margin:0 1.5rem}
+  .sec-head{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:520px){
+  .hero-h1{font-size:2.6rem}
+  .team-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="logo" href="#">
+    <div class="logo-mark">EH</div>
+    <div class="logo-text">
+      <span class="logo-main">Estates</span>
+      <span class="logo-sub">with Hemanth</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#hero" class="on">Home</a></li>
+    <li><a href="#listings">Listings</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="tel:+919844179726" class="nav-call">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.13 13.5 19.79 19.79 0 0 1 1.07 4.9 2 2 0 0 1 3.05 2.72h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+      +91 98441 79726
+    </a></li>
+  </ul>
+  <div class="burger" id="burger" onclick="toggleBurger()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="#hero" onclick="closeMob()">Home</a>
+  <a href="#listings" onclick="closeMob()">Listings</a>
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+  <a href="tel:+919844179726" class="mob-call">📞 +91 98441 79726</a>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-tag">Premium Real Estate · India</div>
+      <h1 class="hero-h1">
+        Find Your<br><i>Perfect</i><br>Address
+      </h1>
+      <p class="hero-desc">Curated luxury properties across India's most sought-after locations. Guided by Hemanth — personally.</p>
+      <div class="hero-btns">
+        <a href="#listings" class="btn-w">
+          Browse Properties
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-num">850<span style="font-size:2rem">+</span></div><div class="hstat-label">Properties Sold</div></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><div class="hstat-num">₹15B</div><div class="hstat-label">Total Value Closed</div></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><div class="hstat-num">15yr</div><div class="hstat-label">Market Experience</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    LUXURY VILLAS<span class="t-sep">◆</span>PENTHOUSE SUITES<span class="t-sep">◆</span>COMMERCIAL SPACES<span class="t-sep">◆</span>BEACHFRONT ESTATES<span class="t-sep">◆</span>HERITAGE PROPERTIES<span class="t-sep">◆</span>HILLSIDE RETREATS<span class="t-sep">◆</span>URBAN RESIDENCES<span class="t-sep">◆</span>LUXURY VILLAS<span class="t-sep">◆</span>PENTHOUSE SUITES<span class="t-sep">◆</span>COMMERCIAL SPACES<span class="t-sep">◆</span>BEACHFRONT ESTATES<span class="t-sep">◆</span>HERITAGE PROPERTIES<span class="t-sep">◆</span>HILLSIDE RETREATS<span class="t-sep">◆</span>URBAN RESIDENCES<span class="t-sep">◆</span>
+  </div>
+</div>
+
+<!-- ══════════ FEATURED ══════════ -->
+<section class="sec sec-alt" id="featured">
+  <div class="sec-head">
+    <div class="sec-head-left">
+      <div class="sec-eye">Hand-Picked Selection</div>
+      <h2 class="sec-h">Featured <i>Properties</i></h2>
+    </div>
+    <a href="#listings" class="btn-ghost" style="align-self:flex-end">View All →</a>
+  </div>
+  <div class="feat-grid">
+    <div class="pcard fi-anim">
+      <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80" alt="Prestige Crown Villa" loading="lazy"/>
+      <div class="pcard-info">
+        <div class="pcard-badge">Exclusive</div>
+        <div class="pcard-name">Prestige Crown Villa</div>
+        <div class="pcard-loc">Jubilee Hills, Hyderabad</div>
+        <div class="pcard-price">₹18.5 Cr</div>
+        <div class="pcard-meta"><span>6 Beds</span><span>·</span><span>7 Baths</span><span>·</span><span>8,200 sq ft</span></div>
+      </div>
+    </div>
+    <div class="pcard fi-anim">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" alt="Azure Sky Penthouse" loading="lazy"/>
+      <div class="pcard-info">
+        <div class="pcard-badge">New</div>
+        <div class="pcard-name">Azure Sky Penthouse</div>
+        <div class="pcard-loc">Bandra West, Mumbai</div>
+        <div class="pcard-price">₹9.2 Cr</div>
+        <div class="pcard-meta"><span>4 Beds</span><span>·</span><span>4 Baths</span></div>
+      </div>
+    </div>
+    <div class="pcard fi-anim">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80" alt="Serene Forest Estate" loading="lazy"/>
+      <div class="pcard-info">
+        <div class="pcard-badge">Premium</div>
+        <div class="pcard-name">Serene Forest Estate</div>
+        <div class="pcard-loc">Whitefield, Bengaluru</div>
+        <div class="pcard-price">₹5.8 Cr</div>
+        <div class="pcard-meta"><span>5 Beds</span><span>·</span><span>5 Baths</span></div>
+      </div>
+    </div>
+    <div class="pcard fi-anim">
+      <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80" alt="Marble Palace Villa" loading="lazy"/>
+      <div class="pcard-info">
+        <div class="pcard-badge">Ultra Luxury</div>
+        <div class="pcard-name">Marble Palace Villa</div>
+        <div class="pcard-loc">Golf Course Road, Gurugram</div>
+        <div class="pcard-price">₹22 Cr</div>
+        <div class="pcard-meta"><span>7 Beds</span><span>·</span><span>8 Baths</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LISTINGS ══════════ -->
+<section id="listings">
+  <div class="sec-eye">Curated Collection</div>
+  <h2 class="sec-h" style="margin-bottom:2.5rem">All <i>Listings</i></h2>
+
+  <div class="search-row">
+    <div class="s-input-wrap">
+      <svg class="s-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input class="s-input" id="searchInput" type="text" placeholder="Search by name, location, type…" oninput="filterListings()"/>
+    </div>
+    <select class="s-select" id="typeFilter" onchange="filterListings()">
+      <option value="">All Types</option>
+      <option value="villa">Villa</option>
+      <option value="penthouse">Penthouse</option>
+      <option value="apartment">Apartment</option>
+      <option value="estate">Estate</option>
+      <option value="commercial">Commercial</option>
+    </select>
+    <select class="s-select" id="locFilter" onchange="filterListings()">
+      <option value="">All Locations</option>
+      <option value="mumbai">Mumbai</option>
+      <option value="delhi">Delhi NCR</option>
+      <option value="bengaluru">Bengaluru</option>
+      <option value="hyderabad">Hyderabad</option>
+      <option value="chennai">Chennai</option>
+      <option value="goa">Goa</option>
+    </select>
+    <select class="s-select" id="budgetFilter" onchange="filterListings()">
+      <option value="">Any Budget</option>
+      <option value="0-5">Under ₹5 Cr</option>
+      <option value="5-10">₹5 – 10 Cr</option>
+      <option value="10-20">₹10 – 20 Cr</option>
+      <option value="20+">Above ₹20 Cr</option>
+    </select>
+    <button class="s-btn" onclick="filterListings()">Search</button>
+  </div>
+
+  <div class="tag-row">
+    <div class="ftag on" onclick="setTag(this,'')">All</div>
+    <div class="ftag" onclick="setTag(this,'villa')">Villas</div>
+    <div class="ftag" onclick="setTag(this,'penthouse')">Penthouses</div>
+    <div class="ftag" onclick="setTag(this,'apartment')">Apartments</div>
+    <div class="ftag" onclick="setTag(this,'estate')">Estates</div>
+    <div class="ftag" onclick="setTag(this,'commercial')">Commercial</div>
+    <div class="res-count" id="resCount">12 properties</div>
+  </div>
+
+  <div class="list-grid" id="listGrid"></div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section class="sec" id="about">
+  <div class="about-grid">
+    <div class="about-img-w fi-anim">
+      <img class="about-img" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80" alt="Hemanth" loading="lazy"/>
+      <div class="about-plaque">
+        <span class="plaque-num">15+</span>
+        <span class="plaque-txt">Years of Excellence</span>
+      </div>
+    </div>
+    <div>
+      <div class="sec-eye">About Us</div>
+      <h2 class="sec-h">Where Luxury<br>Meets <i>Legacy</i></h2>
+      <div class="sec-rule"></div>
+      <p class="about-copy">Estates with Hemanth was built on one unwavering belief: every client deserves a property adviser who is present, knowledgeable, and genuinely invested in their future. Hemanth brings over 15 years of boots-on-the-ground experience across India's luxury real estate market.</p>
+      <p class="about-copy" style="margin-top:1rem">We don't list properties — we match people to places. From intimate pied-à-terres to grand sprawling estates, every recommendation is made with care, discretion, and deep local insight.</p>
+      <div class="about-dividers fi-anim">
+        <div class="about-stat">
+          <div class="astat-num">850+</div>
+          <div class="astat-label">Properties successfully closed across<br>6 major Indian cities</div>
+        </div>
+        <div class="about-stat">
+          <div class="astat-num">₹15B</div>
+          <div class="astat-label">Total transaction value managed<br>over 15 years</div>
+        </div>
+        <div class="about-stat">
+          <div class="astat-num">98%</div>
+          <div class="astat-label">Client satisfaction rate across<br>all completed transactions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<div class="div-line"></div>
+<section class="sec sec-alt" id="values" style="padding-top:5rem;padding-bottom:5rem">
+  <div class="sec-eye" style="margin-bottom:3rem">What We Stand For</div>
+  <div class="vals">
+    <div class="val fi-anim">
+      <div class="val-n">01</div>
+      <div class="val-t">Discretion</div>
+      <p class="val-d">Every client relationship and every transaction is handled with the absolute confidentiality it deserves. Your privacy is not a feature — it is a standard.</p>
+    </div>
+    <div class="val fi-anim">
+      <div class="val-n">02</div>
+      <div class="val-t">Expertise</div>
+      <p class="val-d">Fifteen years of market intelligence, legal clarity, and architectural sensibility inform every property we recommend. Knowledge you can trust.</p>
+    </div>
+    <div class="val fi-anim">
+      <div class="val-n">03</div>
+      <div class="val-t">Excellence</div>
+      <p class="val-d">We maintain only a curated portfolio of properties that meet our rigorous standard. If it's not exceptional, it does not make it to our clients.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<div class="div-line"></div>
+<section class="sec" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="sec-eye">Get In Touch</div>
+      <h2 class="sec-h">Let's Find Your<br><i>Dream Property</i></h2>
+      <div class="sec-rule"></div>
+      <p style="color:var(--muted);font-size:0.88rem;line-height:1.9;margin-bottom:2.5rem">Our advisors are ready to guide you through the most significant investment of your life. Reach out for a private, no-obligation consultation.</p>
+
+      <div class="c-detail">
+        <div class="c-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.13 13.5 19.79 19.79 0 0 1 1.07 4.9 2 2 0 0 1 3.05 2.72h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"/></svg></div>
+        <div><div class="c-label">Call / WhatsApp</div><div class="c-val"><a href="tel:+919844179726">+91 98441 79726</a></div></div>
+      </div>
+      <div class="c-detail">
+        <div class="c-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><div class="c-label">Email</div><div class="c-val"><a href="mailto:hemanth@estateswithhemanth.in">hemanth@estateswithhemanth.in</a></div></div>
+      </div>
+      <div class="c-detail">
+        <div class="c-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="c-label">Office</div><div class="c-val">Prestige Tower, MG Road, Bengaluru — 560001</div></div>
+      </div>
+      <div class="c-detail">
+        <div class="c-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="c-label">Hours</div><div class="c-val">Monday – Saturday, 9 AM – 7 PM</div></div>
+      </div>
+    </div>
+
+    <form class="form" onsubmit="submitForm(event)">
+      <div class="f-row">
+        <div class="fg"><label class="fl">First Name</label><input class="fi" type="text" placeholder="Arjun" required/></div>
+        <div class="fg"><label class="fl">Last Name</label><input class="fi" type="text" placeholder="Sharma" required/></div>
+      </div>
+      <div class="f-row">
+        <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="you@example.com" required/></div>
+        <div class="fg"><label class="fl">Phone</label><input class="fi" type="tel" placeholder="+91 98441 79726"/></div>
+      </div>
+      <div class="fg">
+        <label class="fl">Interested In</label>
+        <select class="fsel fi">
+          <option value="">Select property type</option>
+          <option>Luxury Villa</option><option>Penthouse</option>
+          <option>Premium Apartment</option><option>Commercial</option>
+          <option>Plot / Land</option><option>Other</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Budget Range</label>
+        <select class="fsel fi">
+          <option value="">Select budget</option>
+          <option>Under ₹2 Crore</option><option>₹2 Cr – ₹5 Cr</option>
+          <option>₹5 Cr – ₹10 Cr</option><option>₹10 Cr – ₹20 Cr</option>
+          <option>Above ₹20 Crore</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Message</label><textarea class="fta" placeholder="Tell us about your ideal property, preferred location, timeline…"></textarea></div>
+      <button class="fsub" type="submit">Send Enquiry →</button>
+      <div class="f-ok" id="fOk">✓ Thank you! Hemanth will reach out within 24 hours.</div>
+    </form>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-brand">
+        <div class="logo-mark">EH</div>
+        Estates with Hemanth
+      </div>
+      <p class="foot-desc">Premium real estate advisory guided by personal expertise. We match discerning clients with exceptional properties across India's finest addresses.</p>
+    </div>
+    <div>
+      <div class="fcol-t">Navigate</div>
+      <ul class="fcol-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#listings">Listings</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fcol-t">Property Types</div>
+      <ul class="fcol-links">
+        <li><a href="#listings" onclick="quickType('villa')">Villas</a></li>
+        <li><a href="#listings" onclick="quickType('penthouse')">Penthouses</a></li>
+        <li><a href="#listings" onclick="quickType('apartment')">Apartments</a></li>
+        <li><a href="#listings" onclick="quickType('estate')">Estates</a></li>
+        <li><a href="#listings" onclick="quickType('commercial')">Commercial</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fcol-t">Locations</div>
+      <ul class="fcol-links">
+        <li><a href="#listings">Mumbai</a></li>
+        <li><a href="#listings">Delhi NCR</a></li>
+        <li><a href="#listings">Bengaluru</a></li>
+        <li><a href="#listings">Hyderabad</a></li>
+        <li><a href="#listings">Goa</a></li>
+        <li><a href="#listings">Chennai</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Estates with Hemanth. All rights reserved.</span>
+    <span>RERA Registered &nbsp;·&nbsp; Privacy Policy &nbsp;·&nbsp; Terms of Use</span>
+  </div>
+</footer>
+
+<!-- WHATSAPP -->
+<a class="wa" href="https://wa.me/919844179726?text=Hello%20Hemanth%2C%20I'm%20interested%20in%20a%20property." target="_blank" rel="noopener" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+  <span class="wa-tip">Chat with Hemanth</span>
+</a>
+
+<script>
+// ── DATA ──
+const props=[
+  {id:1,name:"Prestige Crown Villa",loc:"Jubilee Hills, Hyderabad",city:"hyderabad",type:"villa",price:18.5,beds:6,baths:7,sqft:"8,200",badge:"Exclusive",img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=75"},
+  {id:2,name:"Azure Sky Penthouse",loc:"Bandra West, Mumbai",city:"mumbai",type:"penthouse",price:9.2,beds:4,baths:4,sqft:"4,800",badge:"New",img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=75"},
+  {id:3,name:"Serene Forest Estate",loc:"Whitefield, Bengaluru",city:"bengaluru",type:"estate",price:5.8,beds:5,baths:5,sqft:"6,500",badge:"Premium",img:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=75"},
+  {id:4,name:"Obsidian Modern Home",loc:"Adyar, Chennai",city:"chennai",type:"apartment",price:4.1,beds:4,baths:3,sqft:"3,200",badge:"Featured",img:"https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=75"},
+  {id:5,name:"Marble Palace Villa",loc:"Golf Course Rd, Gurugram",city:"delhi",type:"villa",price:22.0,beds:7,baths:8,sqft:"10,500",badge:"Ultra Luxury",img:"https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=75"},
+  {id:6,name:"Sea Cliff Residences",loc:"Dona Paula, Goa",city:"goa",type:"apartment",price:3.5,beds:3,baths:3,sqft:"2,400",badge:"Sea View",img:"https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=75"},
+  {id:7,name:"Dynasty Business Tower",loc:"BKC, Mumbai",city:"mumbai",type:"commercial",price:15.0,beds:0,baths:8,sqft:"12,000",badge:"Commercial",img:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=75"},
+  {id:8,name:"Horizon Ridge Estate",loc:"Sarjapur Road, Bengaluru",city:"bengaluru",type:"estate",price:8.4,beds:5,baths:6,sqft:"7,800",badge:"New",img:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=75"},
+  {id:9,name:"Opal Heights Penthouse",loc:"Hiranandani, Mumbai",city:"mumbai",type:"penthouse",price:11.2,beds:4,baths:5,sqft:"5,200",badge:"Premium",img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75"},
+  {id:10,name:"Heritage Grand Mansion",loc:"Civil Lines, Delhi",city:"delhi",type:"villa",price:28.5,beds:9,baths:10,sqft:"14,000",badge:"Heritage",img:"https://images.unsplash.com/photo-1549517045-bc93de075e53?w=600&q=75"},
+  {id:11,name:"Coastal Dream Villa",loc:"Candolim, Goa",city:"goa",type:"villa",price:7.2,beds:4,baths:4,sqft:"5,000",badge:"Beachside",img:"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=75"},
+  {id:12,name:"Emerald Square Apartment",loc:"Anna Nagar, Chennai",city:"chennai",type:"apartment",price:2.8,beds:3,baths:2,sqft:"1,800",badge:"Value",img:"https://images.unsplash.com/photo-1567684014761-b65e2e3b4e6d?w=600&q=75"},
+];
+
+let activeTag='';
+
+function renderListings(data){
+  const g=document.getElementById('listGrid');
+  const c=document.getElementById('resCount');
+  c.textContent=data.length+' propert'+(data.length===1?'y':'ies');
+  if(!data.length){
+    g.innerHTML='<div class="no-res"><strong>No Properties Found</strong>Try adjusting your filters.</div>';
+    return;
+  }
+  g.innerHTML=data.map(p=>`
+    <div class="lcard fi-anim">
+      <div class="lcard-img-w">
+        <img class="lcard-img" src="${p.img}" alt="${p.name}" loading="lazy"/>
+        <div class="lcard-badge">${p.badge}</div>
+        <div class="lcard-save" title="Save">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+      </div>
+      <div class="lcard-body">
+        <div class="lcard-price">₹${p.price} Cr</div>
+        <div class="lcard-name">${p.name}</div>
+        <div class="lcard-loc">📍 ${p.loc}</div>
+        <div class="lcard-div"></div>
+        <div class="lcard-specs">
+          ${p.type!=='commercial'?`<div class="spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>${p.beds} Beds</div>`:''}
+          <div class="spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>${p.sqft} sq ft</div>
+          <div class="spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm0 0V11H2v9a2 2 0 0 0 2 2z"/></svg>${p.baths} Baths</div>
+        </div>
+      </div>
+    </div>`).join('');
+  observeFI();
+}
+
+function filterListings(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const type=document.getElementById('typeFilter').value||activeTag;
+  const loc=document.getElementById('locFilter').value;
+  const bud=document.getElementById('budgetFilter').value;
+  let r=props.filter(p=>{
+    const mq=!q||p.name.toLowerCase().includes(q)||p.loc.toLowerCase().includes(q)||p.type.includes(q);
+    const mt=!type||p.type===type;
+    const ml=!loc||p.city===loc;
+    let mb=true;
+    if(bud==='0-5')mb=p.price<5;
+    else if(bud==='5-10')mb=p.price>=5&&p.price<=10;
+    else if(bud==='10-20')mb=p.price>10&&p.price<=20;
+    else if(bud==='20+')mb=p.price>20;
+    return mq&&mt&&ml&&mb;
+  });
+  renderListings(r);
+}
+
+function setTag(el,type){
+  document.querySelectorAll('.ftag').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  activeTag=type;
+  document.getElementById('typeFilter').value=type;
+  filterListings();
+}
+
+function quickType(type){
+  activeTag=type;
+  document.getElementById('typeFilter').value=type;
+  filterListings();
+  setTimeout(()=>document.getElementById('listings').scrollIntoView({behavior:'smooth'}),100);
+}
+
+// ── NAV SCROLL HIGHLIGHT ──
+const sections=['hero','listings','about','contact'];
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('mainNav');
+  nav.classList.toggle('up',window.scrollY>40);
+  // update active nav link
+  let cur='hero';
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&window.scrollY>=el.offsetTop-120)cur=id;
+  });
+  document.querySelectorAll('.nav-links a[href]').forEach(a=>{
+    const href=a.getAttribute('href').replace('#','');
+    a.classList.toggle('on',href===cur);
+  });
+});
+
+// ── BURGER ──
+function toggleBurger(){
+  document.getElementById('burger').classList.toggle('open');
+  document.getElementById('mobMenu').classList.toggle('open');
+}
+function closeMob(){
+  document.getElementById('burger').classList.remove('open');
+  document.getElementById('mobMenu').classList.remove('open');
+}
+
+// ── FORM ──
+function submitForm(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('.fsub');
+  btn.textContent='Sending…';btn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('fOk').style.display='block';
+    btn.textContent='Send Enquiry →';btn.disabled=false;
+    e.target.reset();
+  },1400);
+}
+
+// ── FADE IN ──
+function observeFI(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('show');io.unobserve(en.target)}});
+  },{threshold:0.1});
+  document.querySelectorAll('.fi-anim:not(.show)').forEach(el=>io.observe(el));
+}
+
+// ── INIT ──
+renderListings(props);
+observeFI();
+</script>
+</body>
+</html>
